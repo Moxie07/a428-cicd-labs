@@ -1,16 +1,10 @@
-pipeline {
-    agent any
-    tools { nodejs "NodeJS 16"}
-    stages {
-        stage('Build') {
-            steps {
-                sh 'npm install'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './jenkins/scripts/test.sh'
-            }
-        }
+node {
+    env.NODEJS_HOME = "${tool 'NodeJS 16'}"
+    env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
+    stage('Build') {
+        sh 'npm install'
+    }
+    stage('Test') {
+        sh './jenkins/scripts/test.sh'
     }
 }
