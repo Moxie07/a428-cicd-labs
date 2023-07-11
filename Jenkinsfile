@@ -1,15 +1,22 @@
 node {
     env.NODEJS_HOME = "${tool 'NodeJS 16'}"
     env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
-    stage('Build') {
+    stage('Build')
+    {
         sh 'npm install'
     }
-    stage('Test') {
+    stage('Test')
+    {
         sh './jenkins/scripts/test.sh'
     }
-    stage('Deploy') {
+    stage('Manual Approval')
+    {
+        input message: 'Lanjutkan ke tahap deploy?'
+    }
+    stage('Deploy')
+    {
         sh './jenkins/scripts/deliver.sh'
-        input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)'
+        sh 'sleep 1m'
         sh './jenkins/scripts/kill.sh'
     }
 }
